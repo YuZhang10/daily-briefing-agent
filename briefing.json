@@ -1,0 +1,344 @@
+{
+  "generated_for": {
+    "user": "Jordan Chen",
+    "date": "2026-05-15",
+    "timezone": "America/Los_Angeles"
+  },
+  "covered_item_ids": {
+    "calendar": [
+      "cal_001",
+      "cal_002",
+      "cal_003",
+      "cal_004",
+      "cal_005",
+      "cal_006",
+      "cal_007",
+      "cal_008",
+      "cal_009",
+      "cal_010"
+    ],
+    "emails": [
+      "em_001",
+      "em_002",
+      "em_003",
+      "em_008",
+      "em_009",
+      "em_011"
+    ],
+    "news": [
+      "news_001",
+      "news_002",
+      "news_003",
+      "news_004",
+      "news_022"
+    ]
+  },
+  "duration_estimate": {
+    "estimated_seconds": 85,
+    "word_count": 212,
+    "method": "word_count / 150 words per minute * 60"
+  },
+  "sections": [
+    {
+      "name": "opening_and_schedule",
+      "start_char": 0,
+      "end_char": 351,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_001",
+          "cal_002",
+          "cal_003",
+          "cal_004"
+        ],
+        "emails": [
+          "em_002"
+        ],
+        "news": []
+      }
+    },
+    {
+      "name": "relationships_and_conflict",
+      "start_char": 353,
+      "end_char": 639,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_005",
+          "cal_006",
+          "cal_007"
+        ],
+        "emails": [
+          "em_003",
+          "em_008"
+        ],
+        "news": [
+          "news_004"
+        ]
+      }
+    },
+    {
+      "name": "afternoon_actions",
+      "start_char": 641,
+      "end_char": 1034,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_008",
+          "cal_009"
+        ],
+        "emails": [
+          "em_001",
+          "em_009",
+          "em_011"
+        ],
+        "news": [
+          "news_002"
+        ]
+      }
+    },
+    {
+      "name": "external_watch_and_close",
+      "start_char": 1036,
+      "end_char": 1313,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_010"
+        ],
+        "emails": [],
+        "news": [
+          "news_001",
+          "news_003",
+          "news_022"
+        ]
+      }
+    }
+  ],
+  "calendar_conflicts_detected": [
+    {
+      "left_id": "cal_006",
+      "right_id": "cal_007",
+      "overlap_minutes": "15"
+    }
+  ],
+  "dropped_items": {
+    "calendar": [
+      {
+        "id": "cal_011",
+        "reason": "private calendar item; details should not be read aloud",
+        "score": -100
+      }
+    ],
+    "emails": [
+      {
+        "id": "em_004",
+        "reason": "automated, promotional, or mass email",
+        "score": -35
+      },
+      {
+        "id": "em_005",
+        "reason": "automated, promotional, or mass email; low fit with profile or morning actionability",
+        "score": -65
+      },
+      {
+        "id": "em_006",
+        "reason": "low actionability",
+        "score": 0
+      },
+      {
+        "id": "em_007",
+        "reason": "mentions a tracked entity; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "em_010",
+        "reason": "mentions a tracked entity; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "em_012",
+        "reason": "external relationship; automated, promotional, or mass email",
+        "score": -25
+      },
+      {
+        "id": "em_013",
+        "reason": "primary inbox",
+        "score": 20
+      },
+      {
+        "id": "em_014",
+        "reason": "primary inbox; low fit with profile or morning actionability",
+        "score": -10
+      },
+      {
+        "id": "em_015",
+        "reason": "mentions a tracked entity; automated, promotional, or mass email",
+        "score": 0
+      },
+      {
+        "id": "em_016",
+        "reason": "has deadline, owner, or preparation need",
+        "score": 20
+      },
+      {
+        "id": "em_017",
+        "reason": "low actionability",
+        "score": 0
+      },
+      {
+        "id": "em_018",
+        "reason": "automated, promotional, or mass email",
+        "score": -35
+      },
+      {
+        "id": "em_019",
+        "reason": "low fit with profile or morning actionability",
+        "score": -30
+      },
+      {
+        "id": "em_020",
+        "reason": "primary inbox; sensitive personal health detail",
+        "score": -60
+      }
+    ],
+    "news": [
+      {
+        "id": "news_005",
+        "reason": "mentions a tracked entity; payments or platform relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 70
+      },
+      {
+        "id": "news_006",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_007",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_008",
+        "reason": "day-to-day crypto price movement excluded by profile",
+        "score": -60
+      },
+      {
+        "id": "news_009",
+        "reason": "regulatory or compliance relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_010",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_011",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_012",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_013",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_014",
+        "reason": "payments or platform relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_015",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_016",
+        "reason": "pure benchmark news is lower fit than product applications",
+        "score": -20
+      },
+      {
+        "id": "news_017",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_018",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_019",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_020",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_021",
+        "reason": "regulatory or compliance relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_023",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_024",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_025",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_026",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_027",
+        "reason": "payments or platform relevance; product-facing AI or developer-tool relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "news_028",
+        "reason": "regulatory or compliance relevance; payments or platform relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 50
+      },
+      {
+        "id": "news_029",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_030",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      }
+    ]
+  },
+  "validation": {
+    "word_count": 212,
+    "estimated_seconds": 85,
+    "words_per_minute": 150,
+    "profile_min_seconds": 60,
+    "profile_max_seconds": 90,
+    "profile_target_seconds": 75,
+    "issues": [],
+    "passed": true
+  },
+  "notes": [
+    "Selection is deterministic and profile-aware.",
+    "PSD3 is deduplicated across calendar, email, and news into one afternoon action point.",
+    "Private and sensitive personal details are not read aloud."
+  ]
+}

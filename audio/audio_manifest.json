@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "name": "local-samantha-165wpm",
+      "status": "ok",
+      "path": "audio/briefing_local_samantha_165wpm.mp3",
+      "exists": true,
+      "bytes": 1272728
+    },
+    {
+      "name": "local-daniel-160wpm",
+      "status": "ok",
+      "path": "audio/briefing_local_daniel_160wpm.mp3",
+      "exists": true,
+      "bytes": 1454123
+    },
+    {
+      "name": "local-karen-160wpm",
+      "status": "ok",
+      "path": "audio/briefing_local_karen_160wpm.mp3",
+      "exists": true,
+      "bytes": 1422776
+    }
+  ]
+}

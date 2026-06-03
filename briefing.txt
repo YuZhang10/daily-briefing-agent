@@ -1,0 +1,7 @@
+Here is the shape of your Friday, Jordan: the day is dense, and the main theme is payments launch readiness. After standup, you move straight into the second-quarter roadmap review, Priya's one-on-one, and launch-comms focus time. Priya wants a recommendation on whether the payments API can move up by two weeks, so keep that ready before ten thirty.
+
+Lunch with Sam from Stripe now includes Jess Park, their new partner lead, and they may raise Stripe Issuing expansion. The one p.m. slot needs attention: Maya's birthday-planning call overlaps the ACME Bank customer interview by fifteen minutes, so decide which one moves before lunch.
+
+For the afternoon, Alex needs your eyes on the payments revenue slides before the two p.m. board prep, especially the annual recurring revenue projection. At three, Rahul's PSD three review matters: final EU text changes S C A exemption thresholds and adds fraud-data-sharing requirements. Plaid also requires credential rotation by May twentieth; infra is copied, but you are listed as owner.
+
+Externally, Cobalt's payments platform exited beta after four billion dollars in volume. Watch Lyra too: it raised eighty million dollars and added senior Coinbase leadership. Your sharpest order of operations is slides, Priya recommendation, calendar conflict, then PSD three.
