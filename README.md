@@ -2,6 +2,13 @@
 
 This is a small, end-to-end prototype for generating a personalized morning audio briefing from the supplied JSON inputs.
 
+The formal submitted output is the v2 repaired generator result, checked in at the project root:
+
+- `briefing.txt`
+- `briefing.json`
+
+This v2 path is local, deterministic, and does not require API keys. The Gemini-backed v3 runtime is included as an optional higher-quality multi-agent path.
+
 The agent reads:
 
 - `inputs/profile.json`
@@ -9,29 +16,29 @@ The agent reads:
 - `inputs/emails.json`
 - `inputs/news.json`
 
-and writes versioned outputs under the selected workflow folder:
+and writes the required output files:
 
 - `briefing.txt` - plain English text for TTS
 - `briefing.json` - structured metadata explaining coverage, duration, sections, conflicts, and dropped items
 
 ## Quick Start
 
-The recommended no-API local version is the v2 repaired generator:
+The formal submitted version is the v2 repaired generator. It can regenerate the root-level `briefing.txt` and `briefing.json` without network access:
 
 ```bash
-python3 multi_agent_workflow/outputs/review_repair_1/generate_briefing.py
+python3 multi_agent_workflow/outputs/review_repair_1/generate_briefing.py --output-dir .
 ```
 
 Expected output:
 
 ```text
-Wrote briefing.txt and briefing.json to .../multi_agent_workflow/outputs/review_repair_1
+Wrote briefing.txt and briefing.json to .../daily-briefing-agent
 Estimated duration: 84 seconds
 Word count: 211
 Validation passed
 ```
 
-Outputs are written to:
+The same v2 output is also preserved under the workflow folder for versioned comparison:
 
 ```text
 multi_agent_workflow/outputs/review_repair_1/briefing.txt
@@ -72,7 +79,7 @@ vibe_coding_1_0/deterministic_baseline/briefing.json
 
 ## Optional Gemini Multi-Agent Runtime
 
-There is also an optional runtime LLM service under `llm_runtime_workflow/`. It uses a real ModelHub/Gemini-compatible endpoint and runs a PM -> Writer -> User Judge -> optional Repair loop.
+There is also an optional higher-quality runtime LLM service under `llm_runtime_workflow/`. It uses a real ModelHub/Gemini-compatible endpoint and runs a PM -> Writer -> User Judge -> optional Repair loop.
 
 ```bash
 python3 llm_runtime_workflow/run_gemini_workflow.py
@@ -123,6 +130,11 @@ The default audio path does not send briefing text to online TTS services. The o
 ```text
 .
 ├── AGENTS.md
+├── briefing.txt
+├── briefing.json
+├── DECISIONS.md
+├── DECISIONS.template.md
+├── README.md
 ├── README_RAW.md
 ├── llm_runtime_workflow/
 ├── multi_agent_workflow/
@@ -140,8 +152,6 @@ The default audio path does not send briefing text to online TTS services. The o
 │       ├── requirements.txt
 │       ├── generate_audio_variants.py
 │       └── audio/
-├── DECISIONS.md
-├── DECISIONS.template.md
 └── inputs/
     ├── profile.json
     ├── calendar.json

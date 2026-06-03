@@ -223,9 +223,7 @@ estimated_seconds = word_count / 150 * 60
 
 ## 5. 如果再多两个小时
 
-我会优先做两件事：
+如果再多两个小时，我会把重点放在产品化边界，而不是继续堆 prompt：
 
-1. 为 v3 增加本地 coverage verifier。它不信任 Writer Agent 自报，而是用 bundle-level evidence 和文本匹配来判断每个 source ID 是否真的被 spoken briefing 覆盖。
-2. 把 fallback 策略产品化：提前异步运行 v3，如果没按时通过 validation，就自动回退到 v2；同时记录本次使用了哪个版本以及为什么。
-
-这样可以更清楚地体现真实 agent 产品思路：用 LLM 提高理解和表达能力，用确定性工具保证隐私、时长、metadata 和稳定性。
+- 扩展到通用接口，将inputs改成tools调用结果，准备memory记录用户反馈，更新profile等。
+- 构造几组非 Jordan 的测试用户数据，例如 product leader、on-call engineer、sales/account owner、finance/legal operator，用来验证 P0 召回、隐私、去重、profile adherence 和时长控制不是只对当前样例手工有效。
