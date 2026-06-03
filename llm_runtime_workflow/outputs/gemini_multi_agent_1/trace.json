@@ -1,0 +1,18 @@
+[
+  {
+    "round_index": 0,
+    "validation_passed": false,
+    "validation_issues": [
+      "estimated duration outside profile range of 60 to 90 seconds"
+    ],
+    "judge_verdict": "fail",
+    "accepted": false
+  },
+  {
+    "round_index": 1,
+    "validation_passed": true,
+    "validation_issues": [],
+    "judge_verdict": "pass_with_minor_polish",
+    "accepted": true
+  }
+]

@@ -19,6 +19,8 @@ from typing import Any
 
 
 WORDS_PER_MINUTE = 150
+SCRIPT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_ROOT.parents[1]
 
 
 @dataclass(frozen=True)
@@ -459,9 +461,10 @@ def build_metadata(data: dict[str, Any], selection: dict[str, Any], sections_met
     }
 
 
-def write_outputs(root: Path, briefing_text: str, metadata: dict[str, Any]) -> None:
-    (root / "briefing.txt").write_text(briefing_text + "\n", encoding="utf-8")
-    (root / "briefing.json").write_text(
+def write_outputs(output_dir: Path, briefing_text: str, metadata: dict[str, Any]) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "briefing.txt").write_text(briefing_text + "\n", encoding="utf-8")
+    (output_dir / "briefing.json").write_text(
         json.dumps(metadata, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
@@ -472,20 +475,27 @@ def main() -> None:
     parser.add_argument(
         "--root",
         type=Path,
-        default=Path(__file__).resolve().parent,
+        default=PROJECT_ROOT,
         help="Project root containing inputs/.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=SCRIPT_ROOT,
+        help="Directory where briefing.txt and briefing.json should be written.",
     )
     args = parser.parse_args()
 
     root = args.root.resolve()
+    output_dir = args.output_dir.resolve()
     data = load_inputs(root)
     selection = select_items(data)
     briefing_text, sections_meta = assemble_text(build_sections())
     metadata = build_metadata(data, selection, sections_meta, briefing_text)
-    write_outputs(root, briefing_text, metadata)
+    write_outputs(output_dir, briefing_text, metadata)
 
     validation = metadata["validation"]
-    print(f"Wrote briefing.txt and briefing.json")
+    print(f"Wrote briefing.txt and briefing.json to {output_dir}")
     print(f"Estimated duration: {validation['estimated_seconds']} seconds")
     print(f"Word count: {validation['word_count']}")
     if validation["issues"]:

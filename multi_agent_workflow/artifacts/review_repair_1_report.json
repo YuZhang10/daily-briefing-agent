@@ -1,0 +1,27 @@
+{
+  "verdict": "pass_with_fixes",
+  "findings": [
+    {
+      "severity": "P1",
+      "category": "omission",
+      "finding": "The briefing omits a top-20 enterprise customer escalation that needs product input by Monday.",
+      "input_ids": ["em_013"],
+      "briefing_quote": "No spoken mention of Vertex Capital, KYC drop-off, or the Monday product-input request.",
+      "user_impact": "Jordan may enter the weekend without hearing a customer-risk item tied directly to payments launch quality, making Monday's product response more rushed.",
+      "recommendation_to_engineer": "Add one compact action clause, preferably near the Cobalt launch or final order-of-operations section: \"Also, Support needs product input by Monday on Vertex Capital's KYC drop-off.\""
+    },
+    {
+      "severity": "P2",
+      "category": "metadata honesty",
+      "finding": "briefing.json marks em_004 as covered, but the spoken briefing does not actually cover the Notion roadmap-doc update.",
+      "input_ids": ["em_004", "cal_002", "cal_003", "em_002"],
+      "briefing_quote": "First, use the nine o'clock roadmap review to sharpen Priya's ten thirty decision: whether the payments API can move up two weeks.",
+      "user_impact": "Downstream review could incorrectly believe Jordan was told about the document update, when the audio only referenced the meeting and Priya's recommendation request.",
+      "recommendation_to_engineer": "Remove em_004 from global and section-level covered email IDs, unless a spoken doc-update prep note is added."
+    }
+  ],
+  "top_requested_fixes": [
+    "Add the Monday Vertex Capital KYC escalation from em_013 as a short action item.",
+    "Remove em_004 from covered IDs, or explicitly mention the roadmap-doc update if it is intended to be covered."
+  ]
+}

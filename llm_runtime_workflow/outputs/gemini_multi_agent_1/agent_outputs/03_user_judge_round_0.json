@@ -1,0 +1,44 @@
+{
+  "verdict": "fail",
+  "review_markdown": "The briefing is significantly too short (34s vs 75s target). It fails to cover the requested P1 items, including the enterprise customer escalation (Vertex Capital) and the conflict between the personal call with Maya and the ACME Bank interview. Additionally, the metadata claims coverage for items that were never mentioned in the audio text.",
+  "findings": [
+    {
+      "severity": "P0",
+      "category": "omission",
+      "finding": "Briefing failed to mention the calendar conflict between the Maya call and the ACME Bank interview.",
+      "evidence": "cal_006, cal_007",
+      "user_impact": "Missing this context could lead to a double-booking or failed customer interaction.",
+      "recommendation": "Add a specific sentence flagging the one p.m. scheduling conflict."
+    },
+    {
+      "severity": "P1",
+      "category": "omission",
+      "finding": "Briefing missed the Vertex Capital customer escalation.",
+      "evidence": "em_013",
+      "user_impact": "Vertex Capital is a top-20 enterprise customer; product input is needed by Monday.",
+      "recommendation": "Add the Vertex Capital onboarding issue to the escalation section."
+    },
+    {
+      "severity": "P1",
+      "category": "metadata",
+      "finding": "Metadata claims coverage for items not actually spoken in the briefing.",
+      "evidence": "covered_item_ids metadata vs. actual briefing text",
+      "user_impact": "Inaccurate audit trail of what was communicated to the user.",
+      "recommendation": "Ensure the writer agent output and the metadata coverage map are strictly synchronized."
+    },
+    {
+      "severity": "P1",
+      "category": "omission",
+      "finding": "Briefing omitted essential market and business context (Cobalt Labs GA, Lyra Finance/Stripe news).",
+      "evidence": "news_001, news_003, news_004",
+      "user_impact": "Loss of strategic business context requested by the PM spec.",
+      "recommendation": "Include the requested bundle of market and competitor intelligence."
+    }
+  ],
+  "top_requested_fixes": [
+    "Increase length to meet the 60-90 second target by including P1 escalations and P2 market intel.",
+    "Address the 1:00 p.m. calendar conflict (Maya vs. ACME).",
+    "Include the Vertex Capital customer escalation.",
+    "Report the Cobalt Labs GA and key competitor updates (Lyra/Stripe)."
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "spec_summary": "This briefing is designed for Jordan Chen, a PM at Cobalt Labs, to prioritize immediate operational risks, high-stakes meeting preparation, and critical industry regulatory changes. The briefing maintains a warm, efficient, and professional tone, focusing on actionable insights while strictly filtering out noise such as sports, general crypto price movements, and private calendar details. It ensures that internal product priorities and external partner escalations take precedence over general news, with a target duration of 75 seconds to ensure conciseness.",
+  "priority_policy": {
+    "P0": "Immediate action-required items (PSD3 compliance, Plaid credentials) and same-day deadline-critical requests (CEO board deck review, 1:1 prep).",
+    "P1": "Schedule conflicts (Maya call vs. ACME interview) and direct operational escalations (Vertex Capital onboarding complaint).",
+    "P2": "Business context and competitive landscape (Lyra Finance growth, Cobalt Labs GA, Stripe expansion).",
+    "P3": "General tech industry news and non-critical team notifications."
+  },
+  "briefing_plan": {
+    "target_order": [
+      "urgent_actions",
+      "schedule_alerts",
+      "strategic_business_context"
+    ],
+    "must_include_bundles": [
+      {
+        "bundle_id": "urgent_prep_and_compliance",
+        "priority": "P0",
+        "source_ids": {
+          "calendar": [
+            "cal_008",
+            "cal_009"
+          ],
+          "emails": [
+            "em_001",
+            "em_002",
+            "em_009",
+            "em_011"
+          ],
+          "news": [
+            "news_002"
+          ]
+        },
+        "facts": [
+          "Review board deck slides 8-14, focusing on ARR chart before 2pm",
+          "Formulate recommendation for payments API GA timeline for 10:30am 1:1",
+          "Rotate Plaid credentials by May 20th",
+          "Review annotated PSD3 documents before 3pm compliance sync"
+        ],
+        "speaker_goal": "Align Jordan on mandatory deadlines and regulatory requirements to ensure zero-fail execution today.",
+        "why": "These items carry immediate business and legal risk for Cobalt Labs."
+      },
+      {
+        "bundle_id": "escalations_and_conflicts",
+        "priority": "P1",
+        "source_ids": {
+          "calendar": [
+            "cal_006",
+            "cal_007"
+          ],
+          "emails": [
+            "em_013"
+          ]
+        },
+        "facts": [
+          "Enterprise customer Vertex Capital experiencing KYC drop-off in onboarding",
+          "Calendar conflict at 1pm: personal call with Maya vs. ACME Bank interview"
+        ],
+        "speaker_goal": "Flag the urgent customer onboarding issue and prompt Jordan to resolve the schedule conflict.",
+        "why": "Vertex is a top-20 customer; managing calendar overlap is essential for a productive workday."
+      },
+      {
+        "bundle_id": "market_and_competitor_intel",
+        "priority": "P2",
+        "source_ids": {
+          "calendar": [
+            "cal_010"
+          ],
+          "news": [
+            "news_001",
+            "news_003",
+            "news_004",
+            "news_022"
+          ]
+        },
+        "facts": [
+          "Cobalt Labs payments platform is now GA",
+          "Lyra Finance raised 80 million dollars Series C at 1.2 billion valuation and hired a new president",
+          "Stripe expanded Issuing API to five new markets"
+        ],
+        "speaker_goal": "Keep Jordan informed of high-impact competitive and internal platform developments.",
+        "why": "These affect product strategy and competitive positioning."
+      }
+    ],
+    "drop_rules": [
+      {
+        "source_ids": {
+          "emails": [
+            "em_005",
+            "em_006",
+            "em_010",
+            "em_014",
+            "em_017",
+            "em_018",
+            "em_020"
+          ],
+          "news": [
+            "news_006",
+            "news_007",
+            "news_008",
+            "news_019",
+            "news_029"
+          ]
+        },
+        "reason": "Non-essential automated digests, personal confirmations, sports, and general market price news are distracting."
+      }
+    ],
+    "tts_constraints": [
+      "Use natural numbers like 'eighty million dollars', avoid jargon, maintain professional efficiency."
+    ]
+  },
+  "acceptance_criteria": [
+    "Briefing must mention the board deck deadline.",
+    "Briefing must mention the PSD3 and Plaid rotation action items.",
+    "Briefing must flag the calendar conflict between the Maya call and the ACME interview.",
+    "Briefing must NOT reveal private calendar details (cal_011).",
+    "Briefing must explicitly mention Cobalt Labs' GA status."
+  ],
+  "risk_notes": [
+    "If the speaker reads too slowly, drop the 'Market Intel' bundle to prioritize P0 and P1 items.",
+    "PSD3 and Plaid items are critical; ensure they are front-loaded.",
+    "Maya's call is a tracked entity but keep the context limited to the scheduling conflict."
+  ]
+}

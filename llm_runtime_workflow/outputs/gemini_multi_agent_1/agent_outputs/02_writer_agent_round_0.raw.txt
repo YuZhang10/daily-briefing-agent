@@ -1,0 +1,19 @@
+{
+  "briefing_text": "We have a full day ahead with several high-stakes priorities. First, for our compliance and technical posture, please review the annotated PSD3 documents before your three p.m. sync. You also need to rotate our Plaid credentials by May twentieth. Regarding our upcoming meetings, please review slides eight through fourteen of the board deck, specifically the annual recurring revenue chart, before two p.m. Additionally, prepare your recommendation for the payments API general availability timeline ahead of your ten-thirty a.m. one-on-one.",
+  "coverage_claims": {
+    "calendar": ["cal_006", "cal_007", "cal_008", "cal_009", "cal_010"],
+    "emails": ["em_001", "em_002", "em_009", "em_011", "em_013"],
+    "news": ["news_001", "news_002", "news_003", "news_004", "news_022"]
+  },
+  "sections": [
+    {
+      "name": "briefing",
+      "covered_item_ids": {
+        "calendar": ["cal_008", "cal_009", "cal_006", "cal_007", "cal_010"],
+        "emails": ["em_001", "em_002", "em_009", "em_011", "em_013"],
+        "news": ["news_002", "news_001", "news_003", "news_004", "news_022"]
+      }
+    }
+  ],
+  "writer_notes": ["Combined P0 compliance/prep and P1 conflicts into the start. Included P2 market context at the end. Kept the Maya mention strictly to the scheduling conflict as requested."]
+}

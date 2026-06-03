@@ -1,181 +1,231 @@
 # DECISIONS
 
-This document explains the design trade-offs for the submitted prototype. I kept it written like an engineering handoff rather than a polished project report.
+## 1. 架构
 
-## 1. Architecture
+```mermaid
+flowchart TD
+    A["inputs/*.json<br/>profile, calendar, emails, news"] --> B["读取与标准化"]
+    B --> C["本地 preflight signals<br/>日程冲突、截止时间、隐私项、<br/>客户升级、关注实体"]
+    C --> D["策略与规划层<br/>按 profile 排序、过滤、去重、<br/>生成优先级 bundles"]
+    D --> E{"运行模式"}
 
-```text
-inputs/*.json
-    |
-    v
-Ingest and normalize
-    |
-    v
-Policy engine
-  - profile-aware scoring
-  - privacy filtering
-  - conflict detection
-  - topic filtering
-    |
-    v
-Deduper and briefing planner
-  - merge repeated themes such as PSD3
-  - choose a compact set of must-include items
-    |
-    v
-Writer
-  - deterministic writer in this submission
-  - clear replacement point for a future LLM writer
-    |
-    v
-Validator and metadata builder
-  - duration estimate
-  - TTS safety checks
-  - covered and dropped item accounting
-    |
-    v
-briefing.txt + briefing.json
+    E -->|"低延迟 / 无 API"| F["确定性 writer<br/>v1 baseline 或 v2 repaired generator"]
+    E -->|"高质量 / 可提前准备"| G["Gemini multi-agent runtime<br/>PM -> Writer -> Judge -> Repair"]
+
+    F --> H["本地 validator<br/>时长、隐私、TTS 格式"]
+    G --> H
+    H --> I{"是否通过?"}
+    I -->|"通过"| J["briefing.txt + briefing.json"]
+    I -->|"不通过"| K["fallback 或 repair"]
+    K --> F
+    K --> G
 ```
 
-## 2. Key Design Decisions
+真实产品里我不会只押单一路径。LLM 路径负责提高质量上限，确定性路径负责兜住延迟和稳定性下限。
 
-### Multi-step agent instead of one-shot summarization
+```mermaid
+flowchart LR
+    A["夜间 / 清晨<br/>新输入窗口关闭"] --> B["异步运行 v3 Gemini agents"]
+    B --> C{"v3 是否在醒来前<br/>通过验证?"}
+    C -->|"是"| D["播放 v3 briefing<br/>最高质量"]
+    C -->|"否"| E["回退 v2 repaired generator<br/>快速本地版本"]
+    E --> F{"v2 是否可用?"}
+    F -->|"是"| G["播放 v2 briefing"]
+    F -->|"否"| H["播放 v1 baseline"]
+```
 
-The system should not send all four JSON files to an LLM and ask for a summary. This task is mostly about judgment: what to include, what to drop, how to respect private data, how to deduplicate repeated themes, and how to explain those choices.
+## 2. 关键设计决策
 
-The implementation is a multi-step agent pipeline:
+### 多步 Agent，而不是一次性总结
 
-1. Read and normalize the four input files.
-2. Apply explicit profile-aware scoring and filtering.
-3. Detect important edge cases such as calendar conflicts and private events.
-4. Deduplicate repeated topics across calendar, email, and news.
-5. Build a compact briefing plan.
-6. Use a deterministic writer step to turn the plan into TTS-friendly prose.
-7. Validate the final text and generate structured metadata.
+这个任务不应该把四个 JSON 一股脑丢给 LLM，然后让它“总结一下”。真正重要的是判断：哪些内容要说，哪些要丢，如何尊重隐私，如何跨日程/邮件/新闻去重，如何在 `briefing.json` 里解释这些选择。
 
-### Where to use the LLM
+当前实现采用多步 pipeline：
 
-If an LLM is used in a production version, it should sit in the writer and optional repair/critic steps, not in the first-pass selection step.
+1. 读取并标准化四份输入。
+2. 根据 profile 做排序、过滤和优先级判断。
+3. 检测日程冲突、private 事件、action-required 邮件等边界情况。
+4. 跨 calendar、email、news 合并同一真实事件。
+5. 生成一个紧凑的 briefing plan。
+6. 用 writer 生成 TTS 友好的朗读文本。
+7. 用 validator 检查时长、隐私、Markdown/URL/email、数字口语化等约束，并生成 metadata。
 
-The selector should be deterministic because the user profile, privacy rules, and dropped-item reasons need to be auditable. The LLM is better used for natural language quality: turning a constrained plan into a warm, efficient spoken briefing.
+### 三个版本的定位和最终取舍
 
-This submission uses the no-API path by default. The interviewer should be able to run the project in five minutes without configuring external services.
+我做了三个版本，因为这个产品同时有两个互相拉扯的目标：简报质量要高，但用户早上不应该等一个不稳定的 LLM 链路。
 
-The LLM input I would use in the next iteration would be a constrained briefing plan, not the raw JSON. The LLM would be asked to rewrite that plan into natural spoken prose while preserving required facts and avoiding URLs, email addresses, Markdown, and numeric shorthand.
+| 版本 | 运行方式 | 最适合的场景 | 主要优势 | 主要劣势 |
+|---|---|---|---|---|
+| v1 deterministic baseline | 运行 `vibe_coding_1_0/deterministic_baseline/` 下的本地规则和确定性 writer | 五分钟内可复现的本地运行、兜底版本 | 快、稳、无 API key、隐私风险低 | 更像规则系统；语言质量上限较低；早期输出暴露了过多私人上下文 |
+| v2 Codex repaired generator | 运行 `multi_agent_workflow/outputs/review_repair_1/` 下优化后的本地 generator | 低延迟生产候选 | 比 v1 优先级更清楚，TTS 质量更好，同时保持本地可运行 | multi-agent 优化循环本身不是 runtime service；漏掉了 Vertex Capital 客户升级 |
+| v3 Gemini runtime multi-agent | 运行时调用 Gemini，完成 PM、Writer、User Judge、Repair | 对延迟不敏感、可以提前准备的高质量场景 | 用户结果质量上限最高，语义理解能力最强 | 依赖网络/API；会把用户派生数据发到 ModelHub；metadata coverage 还需要更强的本地校验 |
 
-### Selection and prioritization
+如果目标是生成质量最高、最像真实用户会愿意听的 `briefing.txt`，我会选 v3。它最好地覆盖了 Jordan 当天真正有后果的事项：两点前的 board deck、十点半 Priya recommendation、Plaid credential rotation、PSD3 准备、Vertex Capital escalation、Maya/ACME 冲突、Cobalt launch、Stripe context 和 Lyra 竞品动态。
 
-The selection policy should strongly prioritize:
+如果目标是低延迟、可本地稳定运行、无 API 依赖，我会选 v2。它是比 v1 更强的本地 generator，而且不需要 API key 或网络。
 
-- tracked entities from the profile: Cobalt Labs, Stripe, Plaid, Lyra Finance, and Maya Chen;
-- action-required and high-authority emails, especially CEO, partner, compliance, and operational-risk messages;
-- calendar items that affect preparation, sequencing, or conflicts;
-- fintech regulation and platform/product news relevant to Jordan's role.
+实际产品策略应该是混合：
 
-The policy should drop or down-rank:
+1. 在用户醒来前异步运行 v3。
+2. 如果 v3 按时完成并通过本地 validation，就播放 v3。
+3. 如果 v3 超时、不可用，或隐私/TTS validation 不通过，就回退到 v2。
+4. v1 保留为最简单的 deterministic baseline 和本地兜底 reference。
 
-- sports and entertainment news;
-- day-to-day crypto price movement, while keeping crypto regulation or enforcement;
-- automated notifications and promotional emails unless they mention a tracked entity or important operational issue;
-- pure AI benchmark news when it is not a product application.
+一句话总结：LLM agents 提高上限，deterministic generation 兜住下限。
 
-### Calendar and email deduplication
+### LLM 应该放在哪里
 
-Calendar and email items are not treated as interchangeable duplicates. They usually carry different parts of the same real-world event:
+生产版本里，LLM 不应该替代所有本地规则，而应该和本地工具组合使用。
 
-- the calendar item provides time, sequence, location, attendees, and conflicts;
-- the email provides intent, preparation requirements, deadlines, or the latest context.
+选择、隐私过滤、时长检查、TTS 格式检查和 dropped-item accounting 应尽量保持确定性，因为这些部分需要可审计。LLM 更适合做语义规划、自然语言生成、用户视角评审和修复。
 
-The briefing planner therefore merges them into an event bundle instead of deleting one side. For example:
+默认运行路径仍然是 no-API 的本地版本，因为这个项目需要在没有外部服务配置的情况下也能快速跑通。
 
-- `cal_003` plus `em_002`: Priya's one-on-one plus the requested recommendation on pulling the payments API GA forward by two weeks.
-- `cal_005` plus `em_003`: Stripe lunch plus the added Jess Park context and possible Stripe Issuing topic.
-- `cal_006` plus `em_008`: Maya call plus birthday-planning intent.
-- `cal_008` plus `em_001`: board prep plus Alex's request to review payments revenue slides before two p.m.
-- `cal_009` plus `em_011` plus `news_002`: PSD3 sync plus Rahul's action-required email plus Reuters confirmation of the final EU text.
+可选的 v3 路径在 `llm_runtime_workflow/` 下，是真正调用 Gemini 的 multi-agent loop：
 
-The spoken briefing should mention each bundle once, while `briefing.json` should list all covered IDs inside the relevant section. This keeps the audio short without hiding the source evidence.
+```mermaid
+sequenceDiagram
+    participant Inputs as 原始输入
+    participant Tools as 本地 preflight 工具
+    participant PM as PM Agent Gemini
+    participant Writer as Writer Agent Gemini
+    participant Validator as 本地 validator
+    participant Judge as User Judge Gemini
+    participant Repair as Repair Agent Gemini
+    participant Output as 输出文件
 
-### Personalization scope
+    Inputs->>Tools: 提取冲突、准备请求、隐私项、关注实体
+    Tools->>PM: 原始输入 + 确定性 signals
+    PM->>Writer: 结构化 spec 和优先级 bundles
+    Writer->>Validator: briefing text 和 coverage claims
+    Validator->>Judge: 文本、metadata、validation 结果
+    Judge-->>Output: pass 或 findings
+    Judge-->>Repair: validation fail 或存在 P0/P1 时请求修复
+    Repair->>Validator: 修复后的 briefing candidate
+    Validator->>Output: briefing.txt, briefing.json, review, trace
+```
 
-The supplied data is for Jordan Chen, so the submitted output is optimized for Jordan's profile and day. The system design should still be generic: Jordan should be treated as one configured user/persona, not as hardcoded application logic.
+### 信息筛选和优先级
 
-For a production version, I would separate priority into three layers:
+筛选策略优先考虑：
 
-1. Universal consequence signals: deadlines, explicit owner, action-required labels, calendar conflicts, private/sensitive handling, security/legal/compliance risk, executive requests, and prep needed before a scheduled meeting.
-2. Segment-level policy: user clusters such as product leader, on-call engineer, sales/account owner, finance/legal operator, or executive assistant can have different P0 trigger templates.
-3. User-level profile: tracked entities, not-interested topics, tone, and personal exceptions.
+- profile 中的 tracked entities：Cobalt Labs、Stripe、Plaid、Lyra Finance、Maya Chen；
+- action-required、高权威来源、高后果邮件，例如 CEO、partner、compliance、operational risk；
+- 会影响准备、排序或冲突处理的日程；
+- 与 Jordan 角色相关的 fintech regulation、platform/product news。
 
-An LLM can help mine cluster-specific trigger phrases and examples from historical data, but the final priority ladder should remain explicit and auditable. In other words, use the model to propose semantic tags or policy candidates, then let deterministic policy assign P0/P1/P2/P3.
+会被丢弃或降权的内容：
 
-### How the profile is applied
+- sports 和 entertainment；
+- day-to-day crypto price movement，但 crypto regulation 或 enforcement 可以保留；
+- 自动通知和促销邮件，除非它们包含 tracked entity 或重要 operational issue；
+- 和产品应用无关的纯 AI benchmark 新闻。
 
-The profile is applied in three places:
+### Calendar 和 Email 的去重
 
-1. Positive selection: tracked entities such as Cobalt Labs, Stripe, Plaid, Lyra Finance, and Maya Chen receive priority boosts. This is why Cobalt launch news, Stripe lunch context, Plaid credential rotation, Lyra competitive updates, and Maya's conflicting call make it into the briefing.
-2. Negative filtering: topics in `not_interested` are filtered or down-ranked. Sports and entertainment are removed. Day-to-day crypto price movement is removed, while crypto regulation or enforcement can still be considered because the profile explicitly allows that exception.
-3. Output constraints: the writer follows the requested tone: warm but efficient, specific, short, and TTS-friendly. The text avoids "Good morning", avoids URLs and email addresses, and writes numbers naturally.
+Calendar 和 email 不是简单互斥的重复项。它们通常提供同一真实事件的不同维度：
 
-The important design point is that profile handling is not only prompt text. Some preferences are enforced as hard policy, especially topic exclusions, privacy, tracked entities, and duration constraints.
+- calendar 提供时间、顺序、地点、参与人和冲突；
+- email 提供意图、准备事项、deadline 或最新上下文。
 
-### Known data issues found during initial read
+因此 planner 会把它们合并成 event bundle，而不是直接删除其中一边。例如：
 
-- `cal_006` and `cal_007` overlap from one fifteen to one thirty p.m.; the briefing should surface this conflict.
-- `cal_011` is private and should not expose details. It may be mentioned only as a private five p.m. appointment if needed.
-- `em_020` is a personal medical appointment confirmation; the system should avoid reading medical details aloud.
-- PSD3 appears in calendar, email, and news. It should be merged into one concise point, not repeated three times.
-- Bitcoin price movement appears in both email and news, but the profile says to avoid day-to-day crypto price movements. It should be dropped unless tied to regulation or enforcement.
-- Sports and entertainment stories are present and should be filtered.
+- `cal_003` + `em_002`：Priya one-on-one，以及她要求 Jordan 准备是否把 payments API GA 提前两周的 recommendation。
+- `cal_005` + `em_003`：Stripe lunch，加上 Jess Park 参会和 Stripe Issuing 可能被讨论的上下文。
+- `cal_006` + `em_008`：Maya call，但 spoken output 只应讲通话/冲突，不应暴露家庭或生日计划细节。
+- `cal_008` + `em_001`：board prep，以及 Alex 要求两点前 review payments revenue slides。
+- `cal_009` + `em_011` + `news_002`：PSD3 sync、Rahul 的 action-required 邮件，以及 Reuters 对 final EU text 的确认。
 
-### Duration control
+朗读文本应该每个 bundle 只说一次；`briefing.json` 则保留所有被覆盖的 source IDs，方便审计。
 
-The target is seventy-five seconds, with an allowed range of sixty to ninety seconds. I will estimate spoken duration using roughly one hundred fifty words per minute:
+### 个性化边界
+
+这份数据是 Jordan Chen 的一天，所以输出针对 Jordan 优化。但系统设计不能把 Jordan 写死成应用逻辑。Jordan 应该被视为一个由 `profile.json` 配置出来的 persona。
+
+生产版的优先级可以分三层：
+
+1. 通用后果信号：deadline、explicit owner、action-required label、calendar conflict、private/sensitive handling、security/legal/compliance risk、executive request、meeting prep。
+2. 人群/角色策略：product leader、on-call engineer、sales/account owner、finance/legal operator、executive assistant 等不同用户群的 P0 trigger 不一样。
+3. 用户个人 profile：tracked entities、not-interested topics、tone、personal exception。
+
+LLM 可以帮助从历史数据中总结 cluster-level trigger phrases，但最终 P0/P1/P2/P3 的判定最好仍然是显式、可审计的策略。
+
+### Profile 如何进入结果
+
+Profile 不是只塞进 prompt 里，而是在三处生效：
+
+1. 正向选择：tracked entities 获得优先级提升。因此 Cobalt launch、Stripe lunch、Plaid rotation、Lyra competitor update、Maya conflict 会被优先考虑。
+2. 负向过滤：`not_interested` 中的 sports、entertainment、day-to-day crypto price movement 被过滤或降权。
+3. 输出约束：writer 遵守 warm but efficient 的语气，不用固定的 “Good morning”，不用 URL/email，数字口语化，句子适合无视觉上下文收听。
+
+关键点是：profile 不是装饰性 prompt，而是影响 filtering、ranking、wording 和 validation 的真实策略输入。
+
+### 初读数据发现的坑
+
+- `cal_006` 和 `cal_007` 从一点十五到一点半冲突，必须提醒 Jordan 做取舍。
+- `cal_011` 是 private，不能暴露细节。
+- `em_020` 是个人医疗预约确认，不应该读出医疗细节。
+- PSD3 同时出现在 calendar、email、news，应合并为一个点，不要重复三遍。
+- Bitcoin price movement 同时出现在 email 和 news，但 profile 明确不关心 day-to-day crypto price movement。
+- 数据里混有 sports 和 entertainment，应过滤。
+- Maya 是 tracked entity，但私人家庭/生日细节不应被读出来。
+
+### 时长控制
+
+目标是七十五秒，允许范围是六十到九十秒。当前估算使用一百五十 words per minute：
 
 ```text
 estimated_seconds = word_count / 150 * 60
 ```
 
-That means the final briefing should usually land around one hundred eighty to two hundred ten English words. The current generated briefing is two hundred twelve words, estimated at eighty-five seconds, which is inside the required sixty-to-ninety-second range.
+也就是说，最终 briefing 通常应该落在一百八十到二百一十个英文词左右。v1.0 baseline 输出是二百一十二词，估算八十五秒；v2 repaired generator 输出是二百一十一词，估算八十四秒；v3 runtime 输出是 一百九十一词，估算七十六秒，均在要求范围内。
 
-### Metadata fields
+### Metadata 字段
 
-`briefing.json` uses these top-level fields:
+`briefing.json` 主要包含：
 
-- `generated_for`: user, date, and timezone.
-- `covered_item_ids`: actual input IDs covered by the spoken text, grouped by calendar, emails, and news.
-- `duration_estimate`: word count, estimated seconds, and the estimation method.
-- `sections`: character ranges in `briefing.txt`, with item IDs covered by each section.
-- `calendar_conflicts_detected`: explicit overlap detection, currently surfacing the Maya and ACME Bank conflict.
-- `dropped_items`: actively omitted items with reasons and internal scores.
-- `validation`: TTS and duration checks.
-- `notes`: implementation notes that help reviewers interpret the output.
+- `generated_for`：用户、日期、时区。
+- `covered_item_ids`：朗读文本实际覆盖的 calendar / emails / news IDs。
+- `duration_estimate`：词数、估算秒数和估算方法。
+- `sections`：`briefing.txt` 里的字符区间，以及每段覆盖的 input IDs。
+- `calendar_conflicts_detected`：显式检测出的日程冲突。
+- `dropped_items`：主动丢弃的 items 及原因。
+- `validation`：TTS、隐私和时长检查。
+- `notes`：帮助后续排查和理解输出的实现说明。
 
-### TTS friendliness
+### TTS 友好性
 
-The generated `briefing.txt` should be plain spoken English:
+`briefing.txt` 应该是适合直接朗读的纯文本：
 
-- no Markdown markers;
-- no URLs;
-- no email addresses;
-- numbers and units written naturally, such as "twelve percent" instead of "12%";
-- varied opening, not always "Good morning";
-- concise sentences because the listener has no visual context.
+- 无 Markdown 标记；
+- 无 URL；
+- 无 email 地址；
+- 数字和单位口语化，例如 "twelve percent" 而不是 "12%"；
+- 不每天都用同样的开头；
+- 句子短而明确，因为用户听的时候没有视觉上下文。
 
-## 3. AI Tool Usage Log
+## 3. AI 工具使用记录
 
-- I used Codex as a design and implementation partner.
-- Human-led decisions so far: prefer a controllable multi-step agent over one-shot summarization; keep deterministic selection and metadata for auditability; place the LLM only in writer and optional repair steps; keep a no-API fallback for reproducible evaluation.
-- Codex helped read the input data, identify hidden edge cases, draft this decision log, and implement the first prototype.
-- A useful correction during discussion: starting with code immediately would skip the most important part of the task, which is understanding the data traps and system design. We paused and discussed the architecture first.
-- A concrete bug caught during review: the initial metadata used the selector's broader candidate set as `covered_item_ids`, so a few relevant-but-unspoken items appeared as covered. I corrected this by deriving top-level coverage from the actual section metadata, then moving those relevant-but-unspoken items into `dropped_items` with a duration-budget reason.
+- 我使用 Codex 作为设计和实现伙伴。
+- 人主导的决策包括：不做 one-shot summarization；保留确定性 selection 和 metadata；让 LLM 主要负责规划、写作、评审和修复；保留 no-API fallback。
+- Codex 帮助阅读输入数据、识别隐藏 edge cases、编写初版代码、生成音频预览、运行 review-repair 循环，以及实现 Gemini runtime multi-agent 版本。
+- 讨论中的一个重要修正：不要一上来写代码，而是先理解数据陷阱和系统边界。
+- review 中发现的一个具体问题：初版 metadata 曾把“进入候选集但未真正说出口”的 items 也算成 covered。后续改为更谨慎地记录 coverage，并把未说出口但相关的项目放到 `dropped_items`。
+- Gemini runtime 版本暴露了另一个真实问题：LLM writer 会自报 coverage claims，但这些 claims 仍需要本地二次校验，否则可能出现 `briefing.json` 声称覆盖了某个 item，而 spoken text 没有实际提到的情况。
 
-## 4. Known Limitations
+## 4. 已知限制
 
-- The first implementation uses explicit rules rather than a full production retrieval/ranking stack.
-- The deterministic writer is less stylistically flexible than an LLM writer, but it is easier for reviewers to run.
-- The duration estimate is based on word count, not actual TTS audio timing.
-- The system will optimize for this supplied data set while keeping the architecture extensible.
+- v1/v2 本地 generator 使用显式规则，还不是完整的生产级 retrieval/ranking 系统。
+- 确定性 writer 比 LLM writer 稳定，但语言弹性较低。
+- 时长估算基于 word count，不是真实 TTS 音频时间。
+- v3 runtime 依赖 API 和网络，并会把用户派生数据发到 ModelHub。
+- v3 的 metadata coverage 仍部分依赖 Writer Agent 自报，未来应该加入更强的 source-grounded coverage verifier。
 
-## 5. If I Had Two More Hours
+## 5. 如果再多两个小时
 
-I would add an LLM writer and critic behind environment-variable configuration, plus snapshot tests showing that the same input produces stable item selection and metadata.
+我会优先做两件事：
+
+1. 为 v3 增加本地 coverage verifier。它不信任 Writer Agent 自报，而是用 bundle-level evidence 和文本匹配来判断每个 source ID 是否真的被 spoken briefing 覆盖。
+2. 把 fallback 策略产品化：提前异步运行 v3，如果没按时通过 validation，就自动回退到 v2；同时记录本次使用了哪个版本以及为什么。
+
+这样可以更清楚地体现真实 agent 产品思路：用 LLM 提高理解和表达能力，用确定性工具保证隐私、时长、metadata 和稳定性。

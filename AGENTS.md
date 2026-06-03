@@ -32,6 +32,7 @@ This file gives Codex project-level context for the daily briefing agent repo.
 - LLM writers, online TTS, and other external services should be optional layers.
 - Do not make online TTS the default, because briefing text can contain information derived from private calendar, email, and profile data.
 - If an external service would receive user-derived content, call that out clearly and ask for explicit approval.
+- `llm_runtime_workflow/` is the optional Gemini-backed runtime multi-agent service. Keep API keys in environment variables only.
 - Avoid overengineering. This is expected to be a roughly two-hour prototype, so prefer a small, readable implementation with clear checks.
 
 ## Validation Commands
@@ -39,21 +40,29 @@ This file gives Codex project-level context for the daily briefing agent repo.
 After changing core generation logic, run:
 
 ```bash
-python3 generate_briefing.py
+python3 vibe_coding_1_0/deterministic_baseline/generate_briefing.py
+python3 multi_agent_workflow/outputs/review_repair_1/generate_briefing.py
 ```
 
 For optional local audio variants, run:
 
 ```bash
-.venv/bin/python generate_audio_variants.py
+.venv/bin/python vibe_coding_1_0/audio_preview/generate_audio_variants.py
 ```
 
 The optional `--include-online` audio path may send briefing text to external TTS services and should not be used without explicit user approval.
+
+For the optional Gemini multi-agent runtime, run only when external ModelHub access is approved:
+
+```bash
+python3 llm_runtime_workflow/run_gemini_workflow.py
+```
 
 ## Documentation Expectations
 
 - `README.md` is for human run instructions.
 - `README_RAW.md` is the original prompt and should remain unchanged.
 - `DECISIONS.md` is for architecture, trade-offs, AI usage notes, and known limitations.
+- Write `DECISIONS.md` in the project owner's first-person voice. Avoid meta-evaluator phrasing such as "the interviewer would think", "if the interviewer mainly cares", or detached judge commentary.
 - `briefing.json` should be generated metadata, not a hand-written explanation.
 - If code behavior and documentation diverge, update both before calling the task done.

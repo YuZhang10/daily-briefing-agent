@@ -18,9 +18,10 @@ from pathlib import Path
 from typing import Callable
 
 
-ROOT = Path(__file__).resolve().parent
-TEXT_PATH = ROOT / "briefing.txt"
-AUDIO_DIR = ROOT / "audio"
+SCRIPT_ROOT = Path(__file__).resolve().parent
+V1_ROOT = SCRIPT_ROOT.parent
+TEXT_PATH = V1_ROOT / "deterministic_baseline" / "briefing.txt"
+AUDIO_DIR = SCRIPT_ROOT / "audio"
 MANIFEST_PATH = AUDIO_DIR / "audio_manifest.json"
 
 
@@ -30,9 +31,9 @@ def read_text() -> str:
 
 def file_info(path: Path) -> dict[str, object]:
     if not path.exists():
-        return {"path": str(path.relative_to(ROOT)), "exists": False, "bytes": 0}
+        return {"path": str(path.relative_to(SCRIPT_ROOT)), "exists": False, "bytes": 0}
     return {
-        "path": str(path.relative_to(ROOT)),
+        "path": str(path.relative_to(SCRIPT_ROOT)),
         "exists": True,
         "bytes": path.stat().st_size,
     }
@@ -169,7 +170,7 @@ async def main() -> None:
 
     MANIFEST_PATH.write_text(json.dumps({"results": results}, indent=2) + "\n", encoding="utf-8")
 
-    print(f"Wrote manifest: {MANIFEST_PATH.relative_to(ROOT)}")
+    print(f"Wrote manifest: {MANIFEST_PATH.relative_to(SCRIPT_ROOT)}")
     for result in results:
         if result["status"] == "ok":
             print(f"{result['name']}: {result['path']} ({result['bytes']} bytes)")

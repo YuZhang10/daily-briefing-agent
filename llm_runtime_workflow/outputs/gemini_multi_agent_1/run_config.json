@@ -1,0 +1,8 @@
+{
+  "workflow": "gemini_multi_agent_service",
+  "model": "gemini-3.1-fl",
+  "base_url": "https://aidp-i18ntt-sg.tiktok-row.net",
+  "thinking_budget": 0,
+  "max_repair_rounds": 1,
+  "privacy_note": "This run sends calendar, email, news, and profile-derived content to the configured ModelHub endpoint."
+}

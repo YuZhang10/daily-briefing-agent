@@ -1,0 +1,663 @@
+{
+  "date": "2026-05-15",
+  "timezone": "America/Los_Angeles",
+  "generated_for": {
+    "user": "Jordan Chen",
+    "date": "2026-05-15",
+    "timezone": "America/Los_Angeles"
+  },
+  "estimated_duration_seconds": 84,
+  "word_count": 211,
+  "estimation_method": "word_count / 150 words per minute * 60",
+  "covered_item_ids": {
+    "calendar": [
+      "cal_002",
+      "cal_003",
+      "cal_005",
+      "cal_006",
+      "cal_007",
+      "cal_008",
+      "cal_009",
+      "cal_010"
+    ],
+    "emails": [
+      "em_001",
+      "em_002",
+      "em_003",
+      "em_004",
+      "em_008",
+      "em_009",
+      "em_011"
+    ],
+    "news": [
+      "news_001",
+      "news_002",
+      "news_003",
+      "news_004",
+      "news_005",
+      "news_022"
+    ]
+  },
+  "duration_estimate": {
+    "estimated_seconds": 84,
+    "word_count": 211,
+    "method": "word_count / 150 words per minute * 60"
+  },
+  "sections": [
+    {
+      "name": "opening_and_schedule",
+      "start_char": 0,
+      "end_char": 242,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_002",
+          "cal_003"
+        ],
+        "emails": [
+          "em_002",
+          "em_004"
+        ],
+        "news": []
+      }
+    },
+    {
+      "name": "relationships_and_conflict",
+      "start_char": 244,
+      "end_char": 501,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_005",
+          "cal_006",
+          "cal_007"
+        ],
+        "emails": [
+          "em_003",
+          "em_008"
+        ],
+        "news": [
+          "news_004"
+        ]
+      }
+    },
+    {
+      "name": "afternoon_actions",
+      "start_char": 503,
+      "end_char": 749,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_008",
+          "cal_009"
+        ],
+        "emails": [
+          "em_001",
+          "em_011"
+        ],
+        "news": [
+          "news_002"
+        ]
+      }
+    },
+    {
+      "name": "external_watch_and_close",
+      "start_char": 751,
+      "end_char": 1145,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_010"
+        ],
+        "emails": [
+          "em_009"
+        ],
+        "news": [
+          "news_001",
+          "news_003",
+          "news_005",
+          "news_022"
+        ]
+      }
+    },
+    {
+      "name": "action_stack",
+      "start_char": 1147,
+      "end_char": 1338,
+      "covered_item_ids": {
+        "calendar": [],
+        "emails": [],
+        "news": []
+      }
+    }
+  ],
+  "calendar_conflicts_detected": [
+    {
+      "left_id": "cal_006",
+      "right_id": "cal_007",
+      "overlap_minutes": "15"
+    }
+  ],
+  "dropped_items": {
+    "calendar": [
+      {
+        "id": "cal_001",
+        "source_type": "calendar",
+        "priority_drop_rule": "P3 routine standup without special consequence",
+        "reason": "recurring event is lower priority unless it shapes the day",
+        "score": -10
+      },
+      {
+        "id": "cal_004",
+        "source_type": "calendar",
+        "priority_drop_rule": "P3 focus block used only if it changes prep sequencing",
+        "reason": "affects preparation, relationship context, or product risk; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "cal_011",
+        "source_type": "calendar",
+        "priority_drop_rule": "P3 privacy-protected calendar item",
+        "reason": "private calendar item; details should not be read aloud",
+        "score": -100
+      }
+    ],
+    "emails": [
+      {
+        "id": "em_005",
+        "source_type": "email",
+        "priority_drop_rule": "P3 automated promotional digest",
+        "reason": "automated, promotional, or mass email; low fit with profile or morning actionability",
+        "score": -65
+      },
+      {
+        "id": "em_006",
+        "source_type": "email",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "low actionability",
+        "score": 0
+      },
+      {
+        "id": "em_007",
+        "source_type": "email",
+        "priority_drop_rule": "P2 metadata-first item on a busy day",
+        "reason": "mentions a tracked entity; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "em_010",
+        "source_type": "email",
+        "priority_drop_rule": "P2 metadata-first item on a busy day",
+        "reason": "mentions a tracked entity; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "em_012",
+        "source_type": "email",
+        "priority_drop_rule": "P3 recruiter outreach",
+        "reason": "external relationship; automated, promotional, or mass email",
+        "score": -25
+      },
+      {
+        "id": "em_013",
+        "source_type": "email",
+        "priority_drop_rule": "P1 omitted for time budget; Monday deadline is lower urgency than today's conflicts",
+        "reason": "primary inbox",
+        "score": 20
+      },
+      {
+        "id": "em_014",
+        "source_type": "email",
+        "priority_drop_rule": "P3 low-signal group coordination",
+        "reason": "primary inbox; low fit with profile or morning actionability",
+        "score": -10
+      },
+      {
+        "id": "em_015",
+        "source_type": "email",
+        "priority_drop_rule": "P3 automated digest",
+        "reason": "mentions a tracked entity; automated, promotional, or mass email",
+        "score": 0
+      },
+      {
+        "id": "em_016",
+        "source_type": "email",
+        "priority_drop_rule": "P1 omitted for time budget; lower urgency than today's executive and compliance prep",
+        "reason": "has deadline, owner, or preparation need",
+        "score": 20
+      },
+      {
+        "id": "em_017",
+        "source_type": "email",
+        "priority_drop_rule": "P3 low-signal social reminder",
+        "reason": "low actionability",
+        "score": 0
+      },
+      {
+        "id": "em_018",
+        "source_type": "email",
+        "priority_drop_rule": "P3 mass alumni thread",
+        "reason": "automated, promotional, or mass email",
+        "score": -35
+      },
+      {
+        "id": "em_019",
+        "source_type": "email",
+        "priority_drop_rule": "P3 crypto price movement excluded by profile",
+        "reason": "low fit with profile or morning actionability",
+        "score": -30
+      },
+      {
+        "id": "em_020",
+        "source_type": "email",
+        "priority_drop_rule": "P3 privacy-protected personal appointment email",
+        "reason": "primary inbox; sensitive personal health detail",
+        "score": -60
+      }
+    ],
+    "news": [
+      {
+        "id": "news_006",
+        "source_type": "news",
+        "priority_drop_rule": "P3 sports excluded by profile",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_007",
+        "source_type": "news",
+        "priority_drop_rule": "P3 entertainment excluded by profile",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_008",
+        "source_type": "news",
+        "priority_drop_rule": "P3 crypto price movement excluded by profile",
+        "reason": "day-to-day crypto price movement excluded by profile",
+        "score": -60
+      },
+      {
+        "id": "news_009",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first crypto enforcement context",
+        "reason": "regulatory or compliance relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_010",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_011",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_012",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_013",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_014",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first fintech context",
+        "reason": "payments or platform relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_015",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_016",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "pure benchmark news is lower fit than product applications",
+        "score": -20
+      },
+      {
+        "id": "news_017",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_018",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_019",
+        "source_type": "news",
+        "priority_drop_rule": "P3 entertainment excluded by profile",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_020",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_021",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first regulatory context",
+        "reason": "regulatory or compliance relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 25
+      },
+      {
+        "id": "news_023",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_024",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first applied AI context",
+        "reason": "product-facing AI or developer-tool relevance",
+        "score": 10
+      },
+      {
+        "id": "news_025",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_026",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      },
+      {
+        "id": "news_027",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first developer-tool context",
+        "reason": "payments or platform relevance; product-facing AI or developer-tool relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 35
+      },
+      {
+        "id": "news_028",
+        "source_type": "news",
+        "priority_drop_rule": "P2 metadata-first payments regulation context",
+        "reason": "regulatory or compliance relevance; payments or platform relevance; omitted because the sixty-to-ninety-second briefing budget favored more immediate items",
+        "score": 50
+      },
+      {
+        "id": "news_029",
+        "source_type": "news",
+        "priority_drop_rule": "P3 sports excluded by profile",
+        "reason": "sports or entertainment topic excluded by profile",
+        "score": -80
+      },
+      {
+        "id": "news_030",
+        "source_type": "news",
+        "priority_drop_rule": "P3 low consequence or low fit",
+        "reason": "general news with weak profile fit",
+        "score": 0
+      }
+    ]
+  },
+  "bundles": [
+    {
+      "bundle_id": "morning_payments_decisions",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_002",
+          "cal_003"
+        ],
+        "emails": [
+          "em_002",
+          "em_004"
+        ],
+        "news": []
+      },
+      "reason": "Jordan owns the roadmap review agenda and Priya needs a recommendation by ten thirty."
+    },
+    {
+      "bundle_id": "maya_customer_conflict",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_006",
+          "cal_007"
+        ],
+        "emails": [
+          "em_008"
+        ],
+        "news": []
+      },
+      "reason": "Maya is always include and her one p.m. call conflicts with the ACME Bank interview."
+    },
+    {
+      "bundle_id": "stripe_issuing_lunch_context",
+      "priority": "P1",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_005"
+        ],
+        "emails": [
+          "em_003"
+        ],
+        "news": [
+          "news_004"
+        ]
+      },
+      "reason": "Lunch with Stripe has partner context and possible Issuing discussion."
+    },
+    {
+      "bundle_id": "board_revenue_slide_prep",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_008"
+        ],
+        "emails": [
+          "em_001"
+        ],
+        "news": []
+      },
+      "reason": "CEO asks Jordan to review payments revenue slides before the two p.m. board prep."
+    },
+    {
+      "bundle_id": "psd3_compliance_read_ahead",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_009"
+        ],
+        "emails": [
+          "em_011"
+        ],
+        "news": [
+          "news_002"
+        ]
+      },
+      "reason": "Same-day compliance sync depends on final PSD three changes to strong customer authentication and fraud-data sharing."
+    },
+    {
+      "bundle_id": "plaid_credential_rotation",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [],
+        "emails": [
+          "em_009"
+        ],
+        "news": []
+      },
+      "reason": "Plaid credential rotation is due May twentieth and Jordan is listed as owner."
+    },
+    {
+      "bundle_id": "plaid_lawsuit_context",
+      "priority": "P1",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [],
+        "emails": [],
+        "news": [
+          "news_005"
+        ]
+      },
+      "reason": "Plaid class-action news is vendor and reputational risk context, distinct from credential rotation."
+    },
+    {
+      "bundle_id": "cobalt_payments_public_launch",
+      "priority": "P0",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [],
+        "emails": [],
+        "news": [
+          "news_001"
+        ]
+      },
+      "reason": "Cobalt Labs payments general availability is public and tied directly to Jordan's product area."
+    },
+    {
+      "bundle_id": "lyra_competitive_pressure",
+      "priority": "P1",
+      "spoken": true,
+      "source_ids": {
+        "calendar": [
+          "cal_010"
+        ],
+        "emails": [],
+        "news": [
+          "news_003",
+          "news_022"
+        ]
+      },
+      "reason": "The four p.m. Lyra teardown is connected to funding and leadership signals from the tracked competitor."
+    }
+  ],
+  "privacy_transformations": [
+    {
+      "input_ids": [
+        "cal_006",
+        "em_008"
+      ],
+      "spoken_as": "Maya's call",
+      "detail_handling": "Omitted birthday, restaurant, and surprise-party details while preserving the calendar conflict."
+    },
+    {
+      "input_ids": [
+        "cal_011",
+        "em_020"
+      ],
+      "spoken_as": null,
+      "detail_handling": "Private personal appointment details excluded because they do not change the morning action plan."
+    }
+  ],
+  "deduplication": [
+    {
+      "dedupe_id": "roadmap_and_priya",
+      "merged_ids": [
+        "cal_002",
+        "cal_003",
+        "em_002",
+        "em_004"
+      ],
+      "spoken_once_as": "Priya recommendation before ten thirty after the roadmap review."
+    },
+    {
+      "dedupe_id": "maya_conflict",
+      "merged_ids": [
+        "cal_006",
+        "cal_007",
+        "em_008"
+      ],
+      "spoken_once_as": "One p.m. Maya call conflicts with ACME Bank by fifteen minutes."
+    },
+    {
+      "dedupe_id": "stripe_lunch",
+      "merged_ids": [
+        "cal_005",
+        "em_003",
+        "news_004"
+      ],
+      "spoken_once_as": "Stripe lunch context with Jess Park and Issuing expansion."
+    },
+    {
+      "dedupe_id": "board_prep",
+      "merged_ids": [
+        "cal_008",
+        "em_001"
+      ],
+      "spoken_once_as": "Review payments revenue slides before two p.m. board prep."
+    },
+    {
+      "dedupe_id": "psd3_sync",
+      "merged_ids": [
+        "cal_009",
+        "em_011",
+        "news_002"
+      ],
+      "spoken_once_as": "PSD three sync with strong customer authentication and fraud-data-sharing changes."
+    },
+    {
+      "dedupe_id": "plaid_adjacent_risks",
+      "merged_ids": [
+        "em_009",
+        "news_005"
+      ],
+      "spoken_once_as": "Two separate Plaid risks: credential rotation and class-action vendor risk."
+    },
+    {
+      "dedupe_id": "lyra_teardown",
+      "merged_ids": [
+        "cal_010",
+        "news_003",
+        "news_022"
+      ],
+      "spoken_once_as": "Four p.m. Lyra v three software development kit teardown plus funding and leadership context."
+    }
+  ],
+  "validation": {
+    "word_count": 211,
+    "estimated_seconds": 84,
+    "words_per_minute": 150,
+    "profile_min_seconds": 60,
+    "profile_max_seconds": 90,
+    "profile_target_seconds": 75,
+    "issues": [],
+    "passed": true
+  },
+  "notes": [
+    "Selection is deterministic and profile-aware.",
+    "The action stack is ordered by same-day deadline and consequence.",
+    "PSD3 is deduplicated across calendar, email, and news into one afternoon action point.",
+    "Plaid credential rotation and Plaid vendor-risk news are adjacent but kept as separate reasons.",
+    "Private and sensitive personal details are not read aloud."
+  ]
+}

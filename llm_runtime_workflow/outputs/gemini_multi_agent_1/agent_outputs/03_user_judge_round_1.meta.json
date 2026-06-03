@@ -1,0 +1,33 @@
+{
+  "agent": "User Judge Agent",
+  "model": "gemini-3.1-fl",
+  "usage": {
+    "completion_tokens": 320,
+    "prompt_tokens": 13471,
+    "total_tokens": 13791,
+    "cache_read_input_tokens": 10212,
+    "prompt_tokens_details": {
+      "cached_tokens": 10212
+    },
+    "traffic_type": "ON_DEMAND",
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 13471
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 320
+      }
+    ],
+    "cached_tokens_details": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 10212
+      }
+    ]
+  },
+  "parsed": true
+}

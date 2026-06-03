@@ -1,0 +1,167 @@
+{
+  "calendar_conflicts": [
+    {
+      "calendar_ids": [
+        "cal_006",
+        "cal_007"
+      ],
+      "titles": [
+        "Quick call with Maya",
+        "Customer interview — ACME Bank product team"
+      ],
+      "reason": "calendar overlap; listener may need to move or choose one commitment"
+    }
+  ],
+  "action_required_emails": [
+    {
+      "id": "em_009",
+      "subject": "ACTION REQUIRED: credential rotation by May 20",
+      "labels": [
+        "primary",
+        "action-required"
+      ],
+      "summary": "Plaid is requiring all partners to rotate API credentials by 2026-05-20. After that date, unrotated keys will be revoked. Infra is CC'd but Jordan is the listed owner."
+    },
+    {
+      "id": "em_011",
+      "subject": "PSD3 final text dropped overnight — please read before 3pm sync",
+      "labels": [
+        "primary",
+        "action-required"
+      ],
+      "summary": "The EU published the final PSD3 text overnight. Material changes to SCA exemption thresholds and a new fraud-data-sharing requirement that affects our checkout flow. Rahul has annotated the key sections in the linked doc."
+    }
+  ],
+  "customer_escalations": [
+    {
+      "id": "em_013",
+      "subject": "Escalation: enterprise customer complaint re: onboarding flow",
+      "summary": "A top-20 enterprise customer (Vertex Capital) has escalated repeated drop-off in the KYC step of onboarding. Support requests product input by Monday."
+    }
+  ],
+  "meeting_prep_requests": [
+    {
+      "id": "em_001",
+      "subject": "Board deck — need your eyes on payments revenue slides before 2pm Friday",
+      "summary": "CEO asks Jordan to review slides 8-14 of the Q1 board deck before their 2pm prep. Flags the ARR projection chart as the most important one.",
+      "reason": "email implies same-day preparation, owner input, or a deadline"
+    },
+    {
+      "id": "em_002",
+      "subject": "Agenda for our 1:1",
+      "summary": "Priya wants to discuss the payments API GA timeline and whether we can pull it forward two weeks. Asks Jordan to come with a recommendation.",
+      "reason": "email implies same-day preparation, owner input, or a deadline"
+    },
+    {
+      "id": "em_011",
+      "subject": "PSD3 final text dropped overnight — please read before 3pm sync",
+      "summary": "The EU published the final PSD3 text overnight. Material changes to SCA exemption thresholds and a new fraud-data-sharing requirement that affects our checkout flow. Rahul has annotated the key sections in the linked doc.",
+      "reason": "email implies same-day preparation, owner input, or a deadline"
+    },
+    {
+      "id": "em_013",
+      "subject": "Escalation: enterprise customer complaint re: onboarding flow",
+      "summary": "A top-20 enterprise customer (Vertex Capital) has escalated repeated drop-off in the KYC step of onboarding. Support requests product input by Monday.",
+      "reason": "email implies same-day preparation, owner input, or a deadline"
+    },
+    {
+      "id": "em_016",
+      "subject": "PR review requested: fix payments rounding on USD-to-JPY conversion (#4421)",
+      "summary": "Engineering opened a PR fixing a rounding bug that caused a 1-cent discrepancy on certain JPY conversions. Reviewer requested from Jordan as PM owner.",
+      "reason": "email implies same-day preparation, owner input, or a deadline"
+    }
+  ],
+  "private_items": [
+    {
+      "source": "calendar",
+      "id": "cal_011",
+      "title": "Personal appointment",
+      "reason": "calendar item marked private"
+    },
+    {
+      "source": "emails",
+      "id": "em_020",
+      "subject": "Appointment confirmation for May 15, 5:00 PM",
+      "reason": "personal or medical email should not be read in detail"
+    }
+  ],
+  "tracked_entity_hits": {
+    "Cobalt Labs": {
+      "calendar": [],
+      "emails": [
+        "em_007",
+        "em_010",
+        "em_015"
+      ],
+      "news": [
+        "news_001"
+      ]
+    },
+    "Stripe": {
+      "calendar": [
+        "cal_005"
+      ],
+      "emails": [
+        "em_003",
+        "em_007"
+      ],
+      "news": [
+        "news_001",
+        "news_004"
+      ]
+    },
+    "Plaid": {
+      "calendar": [],
+      "emails": [
+        "em_009"
+      ],
+      "news": [
+        "news_005"
+      ]
+    },
+    "Lyra Finance": {
+      "calendar": [
+        "cal_010"
+      ],
+      "emails": [],
+      "news": [
+        "news_003",
+        "news_022"
+      ]
+    },
+    "Maya Chen": {
+      "calendar": [],
+      "emails": [
+        "em_008"
+      ],
+      "news": []
+    }
+  },
+  "drop_candidates": [
+    {
+      "source": "news",
+      "id": "news_006",
+      "reason": "sports or entertainment"
+    },
+    {
+      "source": "news",
+      "id": "news_007",
+      "reason": "sports or entertainment"
+    },
+    {
+      "source": "news",
+      "id": "news_008",
+      "reason": "day-to-day crypto price movement"
+    },
+    {
+      "source": "news",
+      "id": "news_019",
+      "reason": "sports or entertainment"
+    },
+    {
+      "source": "news",
+      "id": "news_029",
+      "reason": "sports or entertainment"
+    }
+  ]
+}

@@ -1,0 +1,433 @@
+{
+  "version": "1.0",
+  "purpose": "Prioritize a 60-90 second eyes-free morning briefing for Jordan Chen using consequence, preparation value, user preferences, privacy, and deduplication.",
+  "briefing_target": {
+    "language": "en",
+    "duration_seconds": {
+      "min": 60,
+      "target": 75,
+      "max": 90
+    },
+    "estimated_tts_wpm": 150,
+    "target_word_count_range": [170, 200],
+    "max_spoken_bundles": 6
+  },
+  "priority_levels": {
+    "P0": {
+      "name": "must_speak",
+      "definition": "Missing the item could cause missed prep, missed deadline, conflict, owner risk, compliance/legal/security exposure, executive visibility risk, or blocked teams.",
+      "audio_rule": "Include in briefing unless privacy masking prevents meaningful mention; if omitted, explain in metadata.",
+      "examples": [
+        {
+          "bundle_id": "morning_payments_decisions",
+          "input_ids": {
+            "calendar": ["cal_002", "cal_003"],
+            "emails": ["em_002", "em_004"],
+            "news": []
+          },
+          "reason": "Jordan owns the 9:00 roadmap agenda and needs a recommendation for Priya on pulling GA forward at 10:30."
+        },
+        {
+          "bundle_id": "board_revenue_slide_prep",
+          "input_ids": {
+            "calendar": ["cal_008"],
+            "emails": ["em_001"],
+            "news": []
+          },
+          "reason": "CEO asks Jordan to review board deck slides 8-14 before the 2:00 board prep; ARR projection is the critical detail."
+        },
+        {
+          "bundle_id": "psd3_compliance_read_ahead",
+          "input_ids": {
+            "calendar": ["cal_009"],
+            "emails": ["em_011"],
+            "news": ["news_002"]
+          },
+          "reason": "Same-day legal/compliance sync with final PSD3 text affecting SCA exemptions and fraud-data sharing."
+        },
+        {
+          "bundle_id": "plaid_credential_rotation",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_009"],
+            "news": []
+          },
+          "reason": "Action-required partner credential rotation by 2026-05-20; Jordan is listed owner and unrotated keys will be revoked."
+        },
+        {
+          "bundle_id": "maya_customer_conflict",
+          "input_ids": {
+            "calendar": ["cal_006", "cal_007"],
+            "emails": ["em_008"],
+            "news": []
+          },
+          "reason": "Maya is an always-include tracked entity, and her 1:00 call overlaps the 1:15 ACME Bank customer interview."
+        },
+        {
+          "bundle_id": "cobalt_payments_public_launch",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_001"]
+          },
+          "reason": "Cobalt Labs payments GA is public, directly tied to Jordan's product area, and mentions Stripe as a partner."
+        }
+      ]
+    },
+    "P1": {
+      "name": "speak_if_room",
+      "definition": "Meaningfully improves partner/customer/competitive decision quality, but is lower urgency than P0.",
+      "audio_rule": "Include only after P0 compression fits within 90 seconds.",
+      "examples": [
+        {
+          "bundle_id": "stripe_issuing_lunch_context",
+          "input_ids": {
+            "calendar": ["cal_005"],
+            "emails": ["em_003"],
+            "news": ["news_004"]
+          },
+          "reason": "Stripe lunch includes a new partner lead and likely Issuing discussion; news gives market context."
+        },
+        {
+          "bundle_id": "lyra_competitive_pressure",
+          "input_ids": {
+            "calendar": ["cal_010"],
+            "emails": [],
+            "news": ["news_003", "news_022"]
+          },
+          "reason": "Tracked competitor has funding and leadership news ahead of the 4:00 competitive teardown."
+        },
+        {
+          "bundle_id": "plaid_lawsuit_context",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_005"]
+          },
+          "reason": "Core integration vendor faces legal/reputational risk; separate from credential rotation."
+        },
+        {
+          "bundle_id": "vertex_customer_escalation",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_013"],
+            "news": []
+          },
+          "reason": "Top-20 enterprise customer escalation needs product input by Monday."
+        },
+        {
+          "bundle_id": "payments_rounding_pr",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_016"],
+            "news": []
+          },
+          "reason": "Product-owner review requested for a payments rounding bug."
+        }
+      ]
+    },
+    "P2": {
+      "name": "metadata_first",
+      "definition": "Relevant to stated interests, but no clear same-day action or high consequence.",
+      "audio_rule": "Usually omit from audio on a busy day; record in metadata as considered or dropped.",
+      "examples": [
+        {
+          "bundle_id": "crypto_enforcement_allowed_exception",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_009"]
+          },
+          "reason": "Crypto enforcement is allowed by profile exception, unlike crypto price moves."
+        },
+        {
+          "bundle_id": "ai_product_and_devtools_watchlist",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_011", "news_013", "news_024", "news_027"]
+          },
+          "reason": "Applied AI and developer-tool news matches interests but does not affect today's schedule."
+        },
+        {
+          "bundle_id": "fintech_regulatory_context",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_014", "news_021", "news_028"]
+          },
+          "reason": "Fintech/regulatory context is relevant but weaker than PSD3 and Plaid actions."
+        },
+        {
+          "bundle_id": "business_context_low_urgency",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_006", "em_007"],
+            "news": []
+          },
+          "reason": "Potentially useful cost/platform context, but no direct same-day owner action."
+        }
+      ]
+    },
+    "P3": {
+      "name": "drop_by_default",
+      "definition": "Low consequence, off-preference, automated, promotional, duplicated, or private detail.",
+      "audio_rule": "Do not include in audio unless promoted by a stronger rule.",
+      "examples": [
+        {
+          "bundle_id": "routine_calendar_noise",
+          "input_ids": {
+            "calendar": ["cal_001", "cal_004"],
+            "emails": [],
+            "news": []
+          },
+          "reason": "Routine standup and focus block have no special consequence unless used for sequencing."
+        },
+        {
+          "bundle_id": "automated_promotional_or_mass_email",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_005", "em_012", "em_014", "em_015", "em_017", "em_018"],
+            "news": []
+          },
+          "reason": "Digest, recruiter, social, promotional, or mass-thread noise."
+        },
+        {
+          "bundle_id": "off_preference_news",
+          "input_ids": {
+            "calendar": [],
+            "emails": ["em_019"],
+            "news": ["news_006", "news_007", "news_008", "news_019", "news_029"]
+          },
+          "reason": "Sports, entertainment, or crypto price movement conflicts with profile preferences."
+        },
+        {
+          "bundle_id": "generic_low_fit_news",
+          "input_ids": {
+            "calendar": [],
+            "emails": [],
+            "news": ["news_012", "news_016", "news_020", "news_023", "news_025", "news_026", "news_030"]
+          },
+          "reason": "Not enough user-specific consequence for a busy 75-second morning briefing."
+        }
+      ]
+    }
+  },
+  "scoring_signals": {
+    "hard_promotions": [
+      {
+        "signal": "same_day_meeting_prep_with_owner_or_exec",
+        "promote_to": "P0",
+        "example_ids": ["cal_002", "cal_008", "em_001"]
+      },
+      {
+        "signal": "action_required_owned_deadline",
+        "promote_to": "P0",
+        "example_ids": ["em_009", "em_011"]
+      },
+      {
+        "signal": "legal_compliance_security_exposure",
+        "promote_to": "P0",
+        "example_ids": ["cal_009", "em_011", "news_002"]
+      },
+      {
+        "signal": "calendar_conflict_with_customer_or_always_include_entity",
+        "promote_to": "P0",
+        "example_ids": ["cal_006", "cal_007", "em_008"]
+      },
+      {
+        "signal": "cobalt_labs_public_payments_launch",
+        "promote_to": "P0",
+        "example_ids": ["news_001"]
+      }
+    ],
+    "weighted_rules": [
+      {
+        "signal": "action_required_label",
+        "points": 4,
+        "example_ids": ["em_009", "em_011"]
+      },
+      {
+        "signal": "deadline_within_three_business_days",
+        "points": 3,
+        "example_ids": ["em_001", "em_009", "em_013"]
+      },
+      {
+        "signal": "executive_or_board_visibility",
+        "points": 4,
+        "example_ids": ["cal_008", "em_001"]
+      },
+      {
+        "signal": "compliance_legal_or_security",
+        "points": 4,
+        "example_ids": ["cal_009", "em_011", "news_002", "news_005", "news_028"]
+      },
+      {
+        "signal": "external_customer_partner_or_vendor",
+        "points": 2,
+        "example_ids": ["cal_005", "em_003", "cal_007", "em_009", "em_013"]
+      },
+      {
+        "signal": "tracked_entity",
+        "points": 2,
+        "example_ids": ["news_001", "news_003", "news_004", "news_005", "em_008"]
+      },
+      {
+        "signal": "cobalt_or_maya_always_include",
+        "points": 3,
+        "minimum_priority": "P1",
+        "example_ids": ["news_001", "em_008", "cal_006"]
+      },
+      {
+        "signal": "automated_or_promotional",
+        "points": -3,
+        "example_ids": ["em_004", "em_005", "em_015", "em_017"]
+      },
+      {
+        "signal": "explicit_not_interested_without_exception",
+        "points": -6,
+        "drop": true,
+        "example_ids": ["news_006", "news_007", "news_008", "news_019", "news_029", "em_019"]
+      }
+    ],
+    "thresholds": {
+      "P0": "score >= 7 or any hard promotion",
+      "P1": "score 4-6",
+      "P2": "score 2-3",
+      "P3": "score <= 1 or any hard drop rule"
+    }
+  },
+  "dropped_topic_rules": [
+    {
+      "rule_id": "drop_sports",
+      "description": "Drop sports scores, standings, and game recaps.",
+      "example_ids": ["news_006", "news_029"]
+    },
+    {
+      "rule_id": "drop_entertainment",
+      "description": "Drop celebrity and entertainment news.",
+      "example_ids": ["news_007", "news_019"]
+    },
+    {
+      "rule_id": "drop_crypto_price_moves",
+      "description": "Drop cryptocurrency price movement unless paired with regulation or enforcement.",
+      "drop_ids": ["news_008", "em_019"],
+      "allowed_exception_ids": ["news_009"]
+    },
+    {
+      "rule_id": "drop_automated_promotional_noise",
+      "description": "Drop automated, promotional, recruiter, mass, social, and digest emails unless they provide evidence for a P0/P1 bundle.",
+      "drop_ids": ["em_005", "em_012", "em_014", "em_015", "em_017", "em_018"],
+      "exception_ids": ["em_004"]
+    },
+    {
+      "rule_id": "drop_low_consequence_general_news_on_busy_day",
+      "description": "Drop general news without a user-specific consequence when P0/P1 items fill the time budget.",
+      "example_ids": ["news_012", "news_016", "news_020", "news_023", "news_025", "news_026", "news_030"]
+    }
+  ],
+  "privacy_rules": [
+    {
+      "rule_id": "mask_private_calendar_and_medical",
+      "input_ids": ["cal_011", "em_020"],
+      "allowed_spoken_form": "private appointment at five",
+      "forbidden_details": ["medical", "Sutter Health", "provider", "appointment type", "private location details"]
+    },
+    {
+      "rule_id": "minimize_personal_family_details",
+      "input_ids": ["cal_006", "em_008"],
+      "allowed_spoken_form": "Maya call at one",
+      "forbidden_details": ["Mom's birthday", "surprise", "restaurant", "family planning details"]
+    },
+    {
+      "rule_id": "strip_contact_and_link_pii_from_audio",
+      "input_ids": ["all"],
+      "forbidden_in_briefing_txt": ["email addresses", "URLs", "full attendee distribution lists"]
+    },
+    {
+      "rule_id": "metadata_id_over_summary_for_sensitive_items",
+      "input_ids": ["cal_011", "em_020", "em_008"],
+      "metadata_guidance": "Use IDs and high-level privacy transformation notes instead of copying sensitive summaries verbatim."
+    }
+  ],
+  "deduplication_bundle_rules": [
+    {
+      "bundle_id": "psd3_compliance_read_ahead",
+      "merge_ids": {
+        "calendar": ["cal_009"],
+        "emails": ["em_011"],
+        "news": ["news_002"]
+      },
+      "merge_reason": "Same PSD3 final-text event and same-day compliance meeting.",
+      "spoken_once_as": "Read Rahul's PSD3 notes before the 3:00 compliance sync; final text changes strong customer authentication exemptions and fraud-data sharing."
+    },
+    {
+      "bundle_id": "stripe_issuing_lunch_context",
+      "merge_ids": {
+        "calendar": ["cal_005"],
+        "emails": ["em_003"],
+        "news": ["news_004"]
+      },
+      "merge_reason": "Lunch context and Stripe Issuing expansion are partner-relevant and should not be repeated as separate news.",
+      "spoken_once_as": "For lunch with Stripe, expect Jess Park and an Issuing conversation; Stripe just expanded Issuing to five more markets."
+    },
+    {
+      "bundle_id": "lyra_competitive_pressure",
+      "merge_ids": {
+        "calendar": ["cal_010"],
+        "emails": [],
+        "news": ["news_003", "news_022"]
+      },
+      "merge_reason": "Multiple Lyra items support the same competitive-teardown context.",
+      "spoken_once_as": "For the Lyra teardown, note the new funding and new president as signs of enterprise-sales pressure."
+    },
+    {
+      "bundle_id": "board_revenue_slide_prep",
+      "merge_ids": {
+        "calendar": ["cal_008"],
+        "emails": ["em_001"],
+        "news": []
+      },
+      "merge_reason": "Email supplies the prep action for the scheduled CEO board-prep meeting.",
+      "spoken_once_as": "Before the 2:00 CEO board prep, review slides eight through fourteen, especially ARR."
+    },
+    {
+      "bundle_id": "maya_customer_conflict",
+      "merge_ids": {
+        "calendar": ["cal_006", "cal_007"],
+        "emails": ["em_008"],
+        "news": []
+      },
+      "merge_reason": "Calendar and email describe the same Maya call, and it conflicts with the customer interview.",
+      "spoken_once_as": "Resolve the one o'clock Maya call because it overlaps the one fifteen ACME Bank interview."
+    },
+    {
+      "bundle_id": "cobalt_payments_public_launch",
+      "merge_ids": {
+        "calendar": [],
+        "emails": [],
+        "news": ["news_001"]
+      },
+      "merge_reason": "Single public launch story; do not repeat lower-signal Cobalt mentions unless tied to a stronger action.",
+      "suppress_lower_signal_related_ids": ["em_007", "em_010"],
+      "spoken_once_as": "Cobalt payments is publicly out of beta with four billion in beta volume and Stripe named as a partner."
+    },
+    {
+      "bundle_id": "plaid_vendor_risk",
+      "merge_ids": {
+        "calendar": [],
+        "emails": ["em_009"],
+        "news": ["news_005"]
+      },
+      "merge_reason": "Same tracked vendor but not the same event; keep separate in metadata. In audio, lead with credential rotation and only append lawsuit context if time remains.",
+      "spoken_once_as": "Plaid credential rotation is the action; lawsuit context is optional if there is room."
+    }
+  ],
+  "final_selection_order": [
+    "Include all P0 bundles, compressed to one sentence each.",
+    "If over 90 seconds, preserve P0 action verbs and drop P1/P2 entirely before dropping P0 detail.",
+    "Add P1 bundles in this order if room: Stripe lunch, Lyra teardown, Vertex escalation, Plaid lawsuit, rounding PR.",
+    "Use P2 only on unusually light days or in metadata.",
+    "Record every omitted P1/P2/P3 item in dropped_items with the rule or time-budget reason."
+  ]
+}

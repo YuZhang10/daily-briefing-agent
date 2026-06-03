@@ -1,0 +1,46 @@
+{
+  "verdict": "pass_with_fixes",
+  "findings": [
+    {
+      "severity": "P1",
+      "category": "priority",
+      "finding": "The closing action stack conflicts with the actual time pressure of Jordan's morning.",
+      "input_ids": ["em_002", "cal_003", "em_001", "cal_008", "cal_006", "cal_007", "em_011", "cal_009"],
+      "briefing_quote": "Your sharpest order of operations is slides, Priya recommendation, calendar conflict, then PSD three.",
+      "user_impact": "Jordan may hear the final instruction as the canonical priority order and spend scarce early-morning prep time on slides before the recommendation that is due first at 10:30.",
+      "recommendation_to_engineer": "Reorder the closing stack by action deadline and consequence: Priya recommendation before 10:30, resolve the 1 p.m. conflict before lunch, review slides before 2 p.m., then PSD3 before 3 p.m. Keep Plaid credential rotation as a dated owner follow-up."
+    },
+    {
+      "severity": "P1",
+      "category": "omission",
+      "finding": "The briefing omits a high-fit Plaid vendor-risk item even though Plaid is a tracked entity and operational issues affect Jordan's team.",
+      "input_ids": ["profile.tracked_entities.Plaid", "news_005", "em_009"],
+      "briefing_quote": "Plaid also requires credential rotation by May twentieth; infra is copied, but you are listed as owner.",
+      "user_impact": "Jordan gets the credential-rotation action but misses a separate external risk that could matter for partner conversations, compliance posture, and payments launch readiness.",
+      "recommendation_to_engineer": "Add a compact Plaid risk clause, or replace a lower-actionability external clause with it: \"Separate from credential rotation, Plaid is facing a class-action over data sharing, so keep vendor-risk questions warm.\""
+    },
+    {
+      "severity": "P2",
+      "category": "metadata honesty",
+      "finding": "briefing.json marks cal_010 covered, but the spoken briefing does not actually mention the 4 p.m. competitive teardown or Lyra v3 SDK review.",
+      "input_ids": ["cal_010", "news_003", "news_022"],
+      "briefing_quote": "Watch Lyra too: it raised eighty million dollars and added senior Coinbase leadership.",
+      "user_impact": "The metadata overstates calendar coverage. A downstream audit could believe Jordan was told about the teardown when the audio only covered related news.",
+      "recommendation_to_engineer": "Either add a spoken mention such as \"and your four p.m. teardown is on Lyra's v3 SDK,\" or remove cal_010 from covered calendar IDs."
+    },
+    {
+      "severity": "P2",
+      "category": "TTS quality",
+      "finding": "The PSD3/SCA sentence is dense for audio-only listening and may be harder to parse while Jordan is getting ready.",
+      "input_ids": ["profile.delivery_notes", "em_011", "news_002", "cal_009"],
+      "briefing_quote": "At three, Rahul's PSD three review matters: final EU text changes S C A exemption thresholds and adds fraud-data-sharing requirements.",
+      "user_impact": "Jordan likely understands the terms, but the compressed sequence of acronym, regulation, threshold change, and new requirement is easy to miss in one pass.",
+      "recommendation_to_engineer": "Slow that sentence down slightly: \"At three, Rahul's PSD three sync matters. The final EU text changes strong customer authentication exemptions and adds a fraud-data-sharing requirement.\""
+    }
+  ],
+  "top_requested_fixes": [
+    "Reorder the closing action stack so the 10:30 Priya recommendation comes before the 2 p.m. board slides.",
+    "Add the omitted Plaid class-action/vendor-risk item from news_005, preferably as a short clause near the credential-rotation action.",
+    "Fix cal_010 metadata honesty by either mentioning the 4 p.m. Lyra v3 SDK teardown or removing the ID from covered calendar items."
+  ]
+}

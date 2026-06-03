@@ -1,0 +1,25 @@
+{
+  "briefing_text": "We have an action-packed morning ahead. First, let's address our high-stakes priorities. Please review slides eight through fourteen of the board deck, specifically the annual recurring revenue chart, before two p.m. Additionally, prepare your recommendation for the payments API general availability timeline for your ten-thirty a.m. one-on-one. You also need to rotate our Plaid credentials by May twentieth and review the annotated PSD3 documents before your three p.m. compliance sync. Moving to operational escalations, your attention is needed on the Vertex Capital account; they are currently experiencing significant drop-off in their onboarding process. Also, please resolve your one p.m. calendar conflict between your personal call with Maya and the ACME Bank interview. Finally, for some important market context, our own payments platform is now officially live. In the wider industry, Stripe has expanded their issuing API into five new markets. Meanwhile, our competitor Lyra Finance has raised eighty million dollars in their latest round, bringing their valuation to one point two billion dollars, and they have appointed a new president. Stay focused on these key items as you begin your day.",
+  "coverage_claims": {
+    "calendar": ["cal_006", "cal_007", "cal_008", "cal_009", "cal_010"],
+    "emails": ["em_001", "em_002", "em_009", "em_011", "em_013"],
+    "news": ["news_001", "news_002", "news_003", "news_004", "news_022"]
+  },
+  "sections": [
+    {
+      "name": "briefing",
+      "covered_item_ids": {
+        "calendar": ["cal_008", "cal_009", "cal_006", "cal_007", "cal_010"],
+        "emails": ["em_001", "em_002", "em_009", "em_011", "em_013"],
+        "news": ["news_002", "news_001", "news_003", "news_004", "news_022"]
+      }
+    }
+  ],
+  "repair_notes": [
+    "Expanded content to reach target duration by including the Vertex Capital escalation, the Maya vs. ACME calendar conflict, and market intelligence.",
+    "Integrated Cobalt Labs GA status and competitor news regarding Lyra Finance and Stripe.",
+    "Ensured all numbers are spoken as plain text as requested.",
+    "Corrected metadata and content synchronization issues found by the judge.",
+    "Maintained professional, efficient tone appropriate for a Senior PM."
+  ]
+}

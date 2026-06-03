@@ -1,0 +1,112 @@
+{
+  "workflow": "gemini_multi_agent_service",
+  "model": "gemini-3.1-fl",
+  "round_index": 0,
+  "date": "2026-05-15",
+  "timezone": "America/Los_Angeles",
+  "generated_for": {
+    "user": "Jordan Chen",
+    "role": "Senior Product Manager",
+    "team": "Payments Platform"
+  },
+  "duration_estimate": {
+    "estimated_seconds": 34,
+    "word_count": 86,
+    "method": "word_count / 150 words per minute * 60"
+  },
+  "covered_item_ids": {
+    "calendar": [
+      "cal_006",
+      "cal_007",
+      "cal_008",
+      "cal_009",
+      "cal_010"
+    ],
+    "emails": [
+      "em_001",
+      "em_002",
+      "em_009",
+      "em_011",
+      "em_013"
+    ],
+    "news": [
+      "news_001",
+      "news_002",
+      "news_003",
+      "news_004",
+      "news_022"
+    ]
+  },
+  "sections": [
+    {
+      "name": "briefing",
+      "start_char": 0,
+      "end_char": 542,
+      "covered_item_ids": {
+        "calendar": [
+          "cal_006",
+          "cal_007",
+          "cal_008",
+          "cal_009",
+          "cal_010"
+        ],
+        "emails": [
+          "em_001",
+          "em_002",
+          "em_009",
+          "em_011",
+          "em_013"
+        ],
+        "news": [
+          "news_001",
+          "news_002",
+          "news_003",
+          "news_004",
+          "news_022"
+        ]
+      }
+    }
+  ],
+  "dropped_items": [
+    {
+      "priority": "P3",
+      "source_ids": {
+        "emails": [
+          "em_005",
+          "em_006",
+          "em_010",
+          "em_014",
+          "em_017",
+          "em_018",
+          "em_020"
+        ],
+        "news": [
+          "news_006",
+          "news_007",
+          "news_008",
+          "news_019",
+          "news_029"
+        ]
+      },
+      "reason": "Non-essential automated digests, personal confirmations, sports, and general market price news are distracting."
+    }
+  ],
+  "validation": {
+    "word_count": 86,
+    "estimated_seconds": 34,
+    "words_per_minute": 150,
+    "profile_min_seconds": 60,
+    "profile_target_seconds": 75,
+    "profile_max_seconds": 90,
+    "issues": [
+      "estimated duration outside profile range of 60 to 90 seconds"
+    ],
+    "passed": false
+  },
+  "judge_verdict": null,
+  "notes": [
+    "PM, Writer, Judge, and optional Repair agents call the configured Gemini-compatible ModelHub endpoint.",
+    "Coverage is claimed by the writer and normalized against known input IDs.",
+    "Local validation remains deterministic so model prose cannot silently violate TTS constraints."
+  ]
+}
