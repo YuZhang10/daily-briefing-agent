@@ -206,24 +206,31 @@ estimated_seconds = word_count / 150 * 60
 
 ## 3. AI 工具使用记录
 
-- 我使用 Codex 作为设计和实现伙伴。
-- 人主导的决策包括：不做 one-shot summarization；保留确定性 selection 和 metadata；让 LLM 主要负责规划、写作、评审和修复；保留 no-API fallback。
-- Codex 帮助阅读输入数据、识别隐藏 edge cases、编写初版代码、生成音频预览、运行 review-repair 循环，以及实现 Gemini runtime multi-agent 版本。
-- 讨论中的一个重要修正：不要一上来写代码，而是先理解数据陷阱和系统边界。
-- review 中发现的一个具体问题：初版 metadata 曾把“进入候选集但未真正说出口”的 items 也算成 covered。后续改为更谨慎地记录 coverage，并把未说出口但相关的项目放到 `dropped_items`。
-- Gemini runtime 版本暴露了另一个真实问题：LLM writer 会自报 coverage claims，但这些 claims 仍需要本地二次校验，否则可能出现 `briefing.json` 声称覆盖了某个 item，而 spoken text 没有实际提到的情况。
+- 我使用 Codex 作为设计和实现伙伴。创建PM / Engineer / User Judge / Repair 的角色分工辅助设计和迭代。
+- 人主导的决策包括：定义一些基础的评价标准，要事优先，抓大放小，敢于舍弃不会造成严重后果的信息；设计Multi agent合作框架，引入 feedback 方式来控制系统的输出质量；不做 one-shot summarization，层级设计逐层处理信息。
+- 让 AI 配合讨论思路，输出细节方案设计；完成全部的代码编写、环境准备，评审和修复；起草文档，绘制流程图
+- AI出错的部分：
+  - AI一开始只做了确定性的pipeline，但是没有考虑到Agent的框架，在我引导之后，后面区分了三层：v1/v2 作为本地稳定 fallback，v3 作为真实调用 Gemini 链路。这样既保留可复现性，也补上 agent 设计的上限。
+  - 在带有feedback的场景，User Judge Agent 发现一个 P2：metadata 声称覆盖了 cal_010，但 spoken text 没有明确提到这个 internal Lyra teardown。这个问题说明即使用 LLM judge，也不能完全相信 LLM 自报 metadata，后续需要本地 coverage verifier。
+- 如果再做一次：
+  - 多做：
+    - 在写代码前先做一轮输入数据审计，列出隐藏坑、P0/P1 候选、去重关系和隐私风险，再进入实现。
+    - 更早引入 LLM-as-judge，对 briefing.txt 和 briefing.json 做逐项 rubric review，尤其检查 coverage、privacy、profile adherence。
+    - 帮我快速生成多组非 Jordan 的 synthetic test users，用来验证这套 priority policy 是否能泛化。
+  - 少做：
+    - 少在 TTS 方案上发散，使用简单的 TTS 模型先快速验证文案效果。
+    - 避免过度美化文档和流程图，导致细节堆砌，保持简单明了。
 
 ## 4. 已知限制
 
 - v1/v2 本地 generator 使用显式规则，还不是完整的生产级 retrieval/ranking 系统。
 - 确定性 writer 比 LLM writer 稳定，但语言弹性较低。
 - 时长估算基于 word count，不是真实 TTS 音频时间。
-- v3 runtime 依赖 API 和网络，并会把用户派生数据发到 ModelHub。
-- v3 的 metadata coverage 仍部分依赖 Writer Agent 自报，未来应该加入更强的 source-grounded coverage verifier。
+- v3 依赖 Gemini 模型，远程部署需要配置相应 API key。可能更换模型后性能会有变化。
 
 ## 5. 如果再多两个小时
 
 如果再多两个小时，我会把重点放在产品化边界，而不是继续堆 prompt：
 
-- 扩展到通用接口，将inputs改成tools调用结果，准备memory记录用户反馈，更新profile等。
+- 接入真实数据源，将inputs改成tools调用结果，并新增memory模块记录历史反馈更新用户偏好、排序策略和表达方式。
 - 构造几组非 Jordan 的测试用户数据，例如 product leader、on-call engineer、sales/account owner、finance/legal operator，用来验证 P0 召回、隐私、去重、profile adherence 和时长控制不是只对当前样例手工有效。
